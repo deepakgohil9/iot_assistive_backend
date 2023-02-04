@@ -46,7 +46,7 @@ const get_data = async (req, res, next) => {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                'title': 'Temperature Bar Chart',
+                'title': 'Humidity Bar Chart',
                 'theme': 'Dark',
                 'data': hum
             })
