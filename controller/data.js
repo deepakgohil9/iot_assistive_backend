@@ -58,11 +58,12 @@ const get_data = async (req, res, next) => {
         res.send({
             temp_url: temp_url,
             hum_url: hum_url,
-            temp: data[length - 1].temperature,
-            hum: data[length - 1].humidity,
-            flame: data[length - 1].flame,
-            gas: data[length - 1].gas,
-            light: data[length - 1].light
+            temp: data[0].temperature,
+            hum: data[0].humidity,
+            flame: data[0].flame,
+            gas: data[0].gas,
+            light: data[0].light,
+            data:data
         })
 
     } catch (error) {
