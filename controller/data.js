@@ -15,7 +15,7 @@ const add_note = async (req, res, next) => {
 
 const get_data = async (req, res, next) => {
     try {
-        let data = await Note.find().limit(5).sort({ createdAt: -1 })
+        let data = await Note.find().limit(10).sort({ createdAt: -1 })
         let temp = []
         let hum = []
 
