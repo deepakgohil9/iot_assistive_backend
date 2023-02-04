@@ -8,16 +8,7 @@ const data_route = require("./routes/data")
 dotenv.config()
 
 const PORT = process.env.PORT || 3000
-const connect = () => {
-    mongoose.connect("mongodb+srv://root:root@cluster0.xosaaoq.mongodb.net/htf?retryWrites=true&w=majority")
-        .then(() => {
-            console.log("Connected to database");
-        })
-        .catch((err) => {
-            console.log(err)
-            throw new Error
-        })
-}
+
 const app = express()
 
 app.use(cors())
@@ -34,8 +25,17 @@ app.use((req, res, next) => {
     }
 })
 
-app.listen(PORT, () => {
-    connect()
-    console.log("Server Started")
-})
+mongoose.connect("mongodb+srv://root:root@cluster0.xosaaoq.mongodb.net/htf?retryWrites=true&w=majority")
+    .then(() => {
+        console.log("Connected to database");
+        app.listen(PORT, () => {
+            console.log("Server Started")
+        })
+
+    })
+    .catch((err) => {
+        console.log(err)
+        throw new Error
+    })
+
 
