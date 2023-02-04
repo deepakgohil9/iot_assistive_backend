@@ -18,6 +18,7 @@ app.use("/note", data_route)
 
 app.use((req, res, next) => {
     if (req.err) {
+        console.log(req.err)
         res.status(400).send({ "status": "error something went wrong" })
     }
     else {
@@ -25,7 +26,7 @@ app.use((req, res, next) => {
     }
 })
 
-mongoose.connect("mongodb+srv://root:root@cluster0.xosaaoq.mongodb.net/htf?retryWrites=true&w=majority")
+mongoose.connect(process.env.MONGO_URL)
     .then(() => {
         console.log("Connected to database");
         app.listen(PORT, () => {

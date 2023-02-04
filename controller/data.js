@@ -1,4 +1,5 @@
 const Note = require("../model/data")
+const fetch = require("node-fetch")
 
 const add_note = async (req, res, next) => {
     try {
@@ -12,4 +13,62 @@ const add_note = async (req, res, next) => {
     }
 }
 
-module.exports = { add_note }
+const get_data = async (req, res, next) => {
+    try {
+        let data = await Note.find().limit(5).sort({ createdAt: -1 })
+        let temp = []
+        let hum = []
+
+        data.forEach(element => {
+            temp.push({ value: element.temperature, label: element.createdAt })
+            hum.push({ value: element.humidity, label: element.createdAt })
+        })
+
+        let temp_url = await fetch('https://api.apyhub.com/generate/charts/bar/url?output=sample.png', {
+            method: 'POST',
+            headers: {
+                'apy-token': process.env.APY_TOKEN,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                'title': 'Temperature Bar Chart',
+                'theme': 'Dark',
+                'data': temp
+            })
+        })
+        temp_url = await temp_url.json()
+
+
+        let hum_url = await fetch('https://api.apyhub.com/generate/charts/bar/url?output=sample.png', {
+            method: 'POST',
+            headers: {
+                'apy-token': process.env.APY_TOKEN,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                'title': 'Temperature Bar Chart',
+                'theme': 'Dark',
+                'data': hum
+            })
+        })
+        hum_url = await hum_url.json()
+
+
+        let length = data.length
+        res.send({
+            temp_url: temp_url,
+            hum_url: hum_url,
+            temp: data[length - 1].temperature,
+            hum: data[length - 1].humidity,
+            flame: data[length - 1].flame,
+            gas: data[length - 1].gas,
+            light: data[length - 1].light
+        })
+
+    } catch (error) {
+        req.err = error
+        next()
+    }
+}
+
+module.exports = { add_note, get_data }
