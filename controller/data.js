@@ -15,6 +15,7 @@ const add_note = async (req, res, next) => {
 
 const get_data = async (req, res, next) => {
     try {
+
         let data = await Note.find().limit(10).sort({ createdAt: -1 })
         let temp = []
         let hum = []
@@ -63,7 +64,7 @@ const get_data = async (req, res, next) => {
             flame: data[0].flame,
             gas: data[0].gas,
             light: data[0].light,
-            data:data
+            data: data
         })
 
     } catch (error) {

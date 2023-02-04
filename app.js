@@ -4,6 +4,7 @@ const dotenv = require("dotenv")
 const cors = require("cors")
 
 const data_route = require("./routes/data")
+const control_route = require("./routes/control")
 
 dotenv.config()
 
@@ -15,6 +16,7 @@ app.use(cors())
 app.use(express.json())
 
 app.use("/note", data_route)
+app.use("/control", control_route)
 
 app.use((req, res, next) => {
     if (req.err) {
